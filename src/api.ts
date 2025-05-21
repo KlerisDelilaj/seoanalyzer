@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://seoanalyzerbackend.onrender.com';
+const API_BASE_URL = 'https://seoanalyzerbackend.onrender.com'; 
 
 export async function analyzeSite(url: string, maxPages: number = 20, singlePage: boolean = true) {
   const response = await fetch(`${API_BASE_URL}/api/analyze`, {
