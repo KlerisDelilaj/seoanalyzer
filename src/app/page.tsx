@@ -7,10 +7,87 @@ import {
   AreaChart, Area, LineChart, Line
 } from 'recharts';
 
+// Define interfaces for the data structures
+interface SeoData {
+  analyzed_url?: string;
+  page_count?: number;
+  pages?: Page[];
+  sitemap_urls?: string[];
+  stats: {
+    numeric?: {
+      word_count?: { mean: number };
+      image_count?: { mean: number };
+      internal_links?: { sum: number };
+      external_links?: { sum: number };
+    };
+    pageMetrics?: PageMetric[];
+    linkDistribution?: LinkDistributionItem[];
+    common_keywords?: KeywordItem[];
+    top_link_pages?: TopLinkPage[];
+    keywords_by_page?: KeywordsByPage[];
+  };
+  recommendations: {
+    general: Recommendation[];
+    content: Recommendation[];
+    pages_to_improve: PagesToImprove[];
+  };
+}
+
+interface PageMetric {
+  url: string;
+  wordCount: number;
+  imageCount: number;
+  pageLink: string;
+  keywordDensity?: number;
+}
+
+interface LinkDistributionItem {
+  name: string;
+  value: number;
+}
+
+interface KeywordItem {
+  name: string;
+  value: number;
+  relevance?: number;
+}
+
+interface TopLinkPage {
+  title?: string;
+  url?: string;
+  page_link: string;
+  internal_links: number;
+  external_links: number;
+  total_links: number;
+}
+
+interface KeywordsByPage {
+  title?: string;
+  url?: string;
+  page_link: string;
+  single_keywords?: { keyword: string; count: number }[];
+  phrases?: { phrase: string; count: number }[];
+}
+
+interface Recommendation {
+  text: string;
+  recommendation: string;
+  type: 'warning' | 'success' | 'info';
+}
+
+interface PagesToImprove {
+  description: string;
+  pages: Page[];
+}
+
 // Define types for the component props
 interface CustomTooltipProps {
   active?: boolean;
-  payload?: Array<any>;
+  payload?: Array<{
+    name: string;
+    value: number;
+    color: string;
+  }>;
   label?: string;
 }
 
@@ -107,7 +184,7 @@ export default function Home() {
   const [maxPages] = useState(20);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState('');
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<SeoData | null>(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedPage, setSelectedPage] = useState<Page | null>(null);
   const [showPageContent, setShowPageContent] = useState(false);
@@ -575,7 +652,7 @@ export default function Home() {
                       <div className="h-80">
                         <ResponsiveContainer width="100%" height="100%">
                           <BarChart
-                            data={data.stats.pageMetrics?.slice(0, 5).map((page: any) => ({
+                            data={data.stats.pageMetrics?.slice(0, 5).map((page: PageMetric) => ({
                               ...page,
                               url: page.url.split('/').pop() || page.url // simplify URL display
                             })) || []}
@@ -647,7 +724,7 @@ export default function Home() {
                               label={({name, value, percent}) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
                               labelLine={false}
                             >
-                              {(data.stats.linkDistribution || []).map((entry: any, index: number) => (
+                              {(data.stats.linkDistribution || []).map((entry: LinkDistributionItem, index: number) => (
                                 <Cell 
                                   key={`cell-${index}`} 
                                   fill={
@@ -682,7 +759,7 @@ export default function Home() {
                     <div className="h-80">
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart
-                          data={data.stats.common_keywords?.slice(0, 7).map((k: any, i: number) => ({
+                          data={data.stats.common_keywords?.slice(0, 7).map((k: KeywordItem, i: number) => ({
                             name: k.name,
                             value: k.value,
                             relevance: k.relevance ? k.relevance * 10 : 0,
@@ -1300,7 +1377,7 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  {/* General recommendations */}
+                {/* General recommendations */}
                   <div className="p-6">
                     <h4 className="text-lg font-bold mb-4 text-gray-800 flex items-center">
                       <svg className="h-5 w-5 mr-2 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
