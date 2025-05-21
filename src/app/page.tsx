@@ -1690,7 +1690,7 @@ export default function Home() {
               </div>
               <p className="text-sm text-gray-600 mt-1">
                 A simple SEO analysis tool.
-              </p>
+              </p> 
             </div>
             
             <div className="flex space-x-6">
