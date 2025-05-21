@@ -1694,7 +1694,7 @@ export default function Home() {
                 <span className="text-xl font-bold text-gray-800">SEO Analyzer</span>
               </div>
               <p className="text-sm text-gray-600 mt-1">
-                An advanced SEO analysis tool by Kleris Delilaj.
+                A simple SEO analysis tool.
               </p>
             </div>
             
