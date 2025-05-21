@@ -362,7 +362,7 @@ export default function Home() {
       {/* Header */}
       <header className="bg-gradient-to-r from-blue-600 to-indigo-700 shadow-md p-6 text-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between">
-          <h1 className="text-2xl font-bold">Website SEO Analyzer</h1>
+          <h1 className="text-2xl font-bold>SEO Analyser Kleris Delilaj</h1>
           
           {!data ? (
             <div className="mt-4 md:mt-0 w-full md:w-1/2">
