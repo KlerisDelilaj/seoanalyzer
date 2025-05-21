@@ -7,6 +7,17 @@ import {
   AreaChart, Area, LineChart, Line
 } from 'recharts';
 
+// Define types for the component props
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<any>;
+  label?: string;
+}
+
+interface CustomLegendProps {
+  payload?: Array<{color: string; value: string;}>;
+}
+
 // Enhanced color palettes
 const CHART_COLORS = {
   primary: ['#4f46e5', '#6366f1', '#818cf8', '#a5b4fc', '#c7d2fe'],
@@ -19,7 +30,7 @@ const CHART_COLORS = {
 };
 
 // Custom tooltip component for better styling
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-4 border border-gray-200 shadow-lg rounded-md">
@@ -36,9 +47,11 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 // Styled legend for charts
-const CustomLegend = (props) => {
+const CustomLegend = (props: CustomLegendProps) => {
   const { payload } = props;
   
+  if (!payload) return null;
+
   return (
     <ul className="flex flex-wrap justify-center gap-4 mt-2">
       {payload.map((entry, index) => (
@@ -54,14 +67,49 @@ const CustomLegend = (props) => {
   );
 };
 
+// Define type interfaces for the data
+interface OverviewStats {
+  total_pages: number;
+  avg_word_count: number;
+  avg_image_count: number;
+  total_links: number;
+}
+
+interface Page {
+  title?: string;
+  url?: string;
+  page_link: string;
+  word_count: number;
+  h1_count: number;
+  image_count: number;
+  raw_html?: string;
+  structured_content?: {
+    headings?: Array<{
+      level: number;
+      text: string;
+    }>;
+    sections?: Array<{
+      heading?: {
+        level: number;
+        text: string;
+      };
+      content: Array<{
+        type?: string;
+        text: string;
+        html?: string;
+      }>;
+    }>;
+  };
+}
+
 export default function Home() {
   const [url, setUrl] = useState('');
   const [maxPages] = useState(20);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState('');
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [selectedPage, setSelectedPage] = useState(null);
+  const [selectedPage, setSelectedPage] = useState<Page | null>(null);
   const [showPageContent, setShowPageContent] = useState(false);
   const [viewContentType, setViewContentType] = useState('structured');
   
@@ -85,7 +133,7 @@ export default function Home() {
     }
   };
 
-  const analyzeSitemapUrl = async (urlToAnalyze) => {
+  const analyzeSitemapUrl = async (urlToAnalyze: string) => {
     if (!urlToAnalyze) return;
     
     setError('');
@@ -105,7 +153,7 @@ export default function Home() {
     }
   };
   
-  const getOverviewStats = () => {
+  const getOverviewStats = (): OverviewStats => {
     if (!data?.stats?.numeric) return {
       total_pages: 0,
       avg_word_count: 0,
@@ -123,7 +171,7 @@ export default function Home() {
     };
   };
 
-  const renderStructuredContent = (page) => {
+  const renderStructuredContent = (page: Page) => {
     if (!page?.structured_content) {
       return <p className="text-gray-700">No structured content available</p>;
     }
@@ -245,7 +293,7 @@ export default function Home() {
     );
   };
 
-  const renderRawHtml = (page) => {
+  const renderRawHtml = (page: Page) => {
     if (!page?.raw_html) {
       return <p className="text-gray-700">No HTML content available</p>;
     }
@@ -527,7 +575,7 @@ export default function Home() {
                       <div className="h-80">
                         <ResponsiveContainer width="100%" height="100%">
                           <BarChart
-                            data={data.stats.pageMetrics?.slice(0, 5).map(page => ({
+                            data={data.stats.pageMetrics?.slice(0, 5).map((page: any) => ({
                               ...page,
                               url: page.url.split('/').pop() || page.url // simplify URL display
                             })) || []}
@@ -599,7 +647,7 @@ export default function Home() {
                               label={({name, value, percent}) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
                               labelLine={false}
                             >
-                              {(data.stats.linkDistribution || []).map((entry, index) => (
+                              {(data.stats.linkDistribution || []).map((entry: any, index: number) => (
                                 <Cell 
                                   key={`cell-${index}`} 
                                   fill={
@@ -634,7 +682,7 @@ export default function Home() {
                     <div className="h-80">
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart
-                          data={data.stats.common_keywords?.slice(0, 7).map((k, i) => ({
+                          data={data.stats.common_keywords?.slice(0, 7).map((k: any, i: number) => ({
                             name: k.name,
                             value: k.value,
                             relevance: k.relevance ? k.relevance * 10 : 0,
