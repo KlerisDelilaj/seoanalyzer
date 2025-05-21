@@ -376,7 +376,7 @@ export default function Home() {
                 <div>
                   <h2 className="text-2xl font-bold mb-2 text-gray-800">Website SEO Analysis Tool</h2>
                   <p className="text-gray-600 mb-4 max-w-2xl">
-                    Enter a URL above to analyze the website's SEO metrics. The tool will analyze the page
+                    Enter a URL above to analyze the website&apos;s SEO metrics. The tool will analyze the page
                     you enter, extract sitemap information, and provide detailed SEO recommendations to improve your search rankings.
                   </p>
                   <div className="flex flex-wrap gap-4">
@@ -702,7 +702,7 @@ export default function Home() {
                       <div>
                         <h3 className="text-xl font-bold text-gray-800">Content Analysis</h3>
                         <p className="mt-1 text-gray-600">
-                          Detailed metrics for each page's content, including word count, headings, and images.
+                          Detailed metrics for each page&apos;s content, including word count, headings, and images.
                         </p>
                       </div>
                     </div>
@@ -1265,8 +1265,7 @@ export default function Home() {
                       {data.recommendations.general.map((rec, index) => (
                         <div 
                           key={index} 
-                          className={`p-4 rounded-lg ${
-                            rec.type === 'warning' ? 'bg-amber-50 border-l-4 border-amber-500' : 
+                          className={`p-4 rounded-lg ${rec.type === 'warning' ? 'bg-amber-50 border-l-4 border-amber-500' : 
                             rec.type === 'success' ? 'bg-emerald-50 border-l-4 border-emerald-500' : 
                             'bg-indigo-50 border-l-4 border-indigo-500'
                           }`}
@@ -1414,7 +1413,7 @@ export default function Home() {
                       </svg>
                       SEO Action Plan
                     </h4>
-                    <p className="text-sm text-gray-600">Prioritized actions to improve your website's SEO</p>
+                    <p className="text-sm text-gray-600">Prioritized actions to improve your website&apos;s SEO</p>
                   </div>
                   
                   <div className="p-5">
