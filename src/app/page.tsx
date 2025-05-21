@@ -7,7 +7,6 @@ import {
   AreaChart, Area, LineChart, Line
 } from 'recharts';
 
-// Define interfaces for the data structures
 interface SeoData {
   analyzed_url?: string;
   page_count?: number;
@@ -95,7 +94,6 @@ interface CustomLegendProps {
   payload?: Array<{color: string; value: string;}>;
 }
 
-// Enhanced color palettes
 const CHART_COLORS = {
   primary: ['#4f46e5', '#6366f1', '#818cf8', '#a5b4fc', '#c7d2fe'],
   secondary: ['#06b6d4', '#22d3ee', '#67e8f9', '#a5f3fc', '#cffafe'],
@@ -106,7 +104,6 @@ const CHART_COLORS = {
   error: ['#ef4444', '#f87171', '#fca5a5', '#fecaca', '#fee2e2'],
 };
 
-// Custom tooltip component for better styling
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
@@ -123,7 +120,6 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   return null;
 };
 
-// Styled legend for charts
 const CustomLegend = (props: CustomLegendProps) => {
   const { payload } = props;
   
@@ -144,7 +140,6 @@ const CustomLegend = (props: CustomLegendProps) => {
   );
 };
 
-// Define type interfaces for the data
 interface OverviewStats {
   total_pages: number;
   avg_word_count: number;
@@ -389,7 +384,7 @@ export default function Home() {
   
   return (
     <main className="min-h-screen bg-gray-50 text-gray-800">
-      {/* Header with improved design */}
+      {/* Header*/}
       <header className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 shadow-xl p-6 text-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between">
           <div className="flex items-center">
@@ -471,7 +466,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main content with improved UI */}
+      {/* Main content*/}
       {!data ? (
         <div className="max-w-7xl mx-auto p-6">
           {isAnalyzing ? (
@@ -538,7 +533,7 @@ export default function Home() {
         </div>
       ) : (
         <>
-          {/* Tabs with improved design */}
+          {/* Tabs */}
           <div className="bg-white shadow-md border-b border-gray-200">
             <div className="max-w-7xl mx-auto relative">
               <nav className="flex overflow-x-auto">
@@ -579,7 +574,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto p-6">
             {activeTab === 'dashboard' && (
               <div className="space-y-6">
-                {/* Summary cards with new design */}
+                {/* Summary cards*/}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   {[
                     {
@@ -654,7 +649,7 @@ export default function Home() {
                           <BarChart
                             data={data.stats.pageMetrics?.slice(0, 5).map((page: PageMetric) => ({
                               ...page,
-                              url: page.url.split('/').pop() || page.url // simplify URL display
+                              url: page.url.split('/').pop() || page.url
                             })) || []}
                             margin={{ top: 10, right: 10, left: 10, bottom: 30 }}
                           >
